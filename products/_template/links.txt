@@ -1,0 +1,7 @@
+# Landing page, advertorial and checkout page URLs — one per line.
+# Lines starting with # are ignored. Order doesn't matter.
+# The checkout page is where pricing and bundles usually live, so include it.
+
+https://example.com/your-landing-page
+https://example.com/your-advertorial
+https://example.com/checkout

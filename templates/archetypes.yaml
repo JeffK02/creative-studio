@@ -1,0 +1,115 @@
+# Ad archetype definitions.
+#
+# `fields` are the TEXT ELEMENTS each archetype needs. The image model renders
+# them directly into the image. Where it garbles them, the editor has the exact
+# strings here to drop in by hand — that is the whole reason this structure
+# survives even without templates.
+#
+# `max_chars` are HARD limits injected into the brief prompt. They exist because
+# generated text degrades sharply with length: a 30-character headline usually
+# renders clean, an 80-character one usually does not. They also keep text
+# legible at feed size on a 1080x1080 frame.
+#
+# `render_mode` decides whether the archetype needs a Canva template at all:
+#   full_generate — the image model produces the finished ad, text included.
+#                   This is the default. The editor fixes what comes out broken.
+#   template      — image model produces the base visual only; text applied
+#                   downstream in Canva. Kept as a fallback.
+#
+# After your first batch, count how many creatives needed manual text fixing.
+# If a specific archetype fails most of the time, switch that one to `template`
+# rather than abandoning it — the text-heavy ones (comparison, three_callout)
+# are the likeliest candidates.
+#
+# Limits below are sized for English on a 1080x1080 frame. Tighten any that
+# come back illegible or garbled from the image model.
+
+templates:
+
+  native_story:
+    render_mode: full_generate
+    description: >
+      Minimal or no overlay. Looks like an organic post, not an ad.
+      Carries the angle almost entirely in the image. Use for story copy
+      and problem-aware / unaware traffic.
+    fields:
+      headline:  { max_chars: 45, optional: true }
+    notes: "Lowest design level. Do not add badges or callouts."
+
+  headline_hero:
+    render_mode: full_generate
+    description: >
+      Product hero shot with a single dominant headline. The workhorse.
+      Use when the angle is one sharp claim.
+    fields:
+      headline: { max_chars: 42 }
+      subhead:  { max_chars: 60, optional: true }
+      cta:      { max_chars: 22, optional: true }
+
+  problem_solution:
+    render_mode: full_generate
+    description: >
+      Split frame. Left/top = the problem state, right/bottom = the resolved
+      state. Strong for problem-aware traffic.
+    fields:
+      headline:      { max_chars: 40 }
+      label_problem: { max_chars: 24 }
+      label_solution:{ max_chars: 24 }
+      cta:           { max_chars: 22, optional: true }
+
+  three_callout:
+    render_mode: full_generate
+    description: >
+      Product centre, three callouts with connector lines. Benefit or
+      ingredient breakdown. Good for solution- and product-aware traffic.
+    fields:
+      headline:   { max_chars: 38 }
+      callout_1:  { max_chars: 30 }
+      callout_2:  { max_chars: 30 }
+      callout_3:  { max_chars: 30 }
+
+  review_card:
+    render_mode: full_generate
+    description: >
+      Testimonial styled as a review. Stars, name, quote, product inset.
+      Social proof carries the angle.
+    fields:
+      quote:       { max_chars: 120 }
+      reviewer:    { max_chars: 24 }
+      headline:    { max_chars: 38, optional: true }
+
+  comparison:
+    render_mode: full_generate
+    description: >
+      Us vs them, or before vs after. Two columns with tick/cross rows.
+      Strong at sophistication stage 3–4 where mechanism is contested.
+    fields:
+      headline: { max_chars: 38 }
+      col_a:    { max_chars: 18 }
+      col_b:    { max_chars: 18 }
+      row_1:    { max_chars: 28 }
+      row_2:    { max_chars: 28 }
+      row_3:    { max_chars: 28 }
+
+  myth_bust:
+    render_mode: full_generate
+    description: >
+      "Most people think X. Here's what's actually happening." The natural
+      home for your UMP — the hidden cause. Often the strongest new-angle
+      format available to you.
+    fields:
+      myth:     { max_chars: 46 }
+      truth:    { max_chars: 60 }
+      cta:      { max_chars: 22, optional: true }
+
+  authority_stack:
+    render_mode: full_generate
+    description: >
+      Badges, credentials, figures, guarantee. Closes product-aware and
+      most-aware traffic. Weak as a cold opener.
+    fields:
+      headline: { max_chars: 38 }
+      badge_1:  { max_chars: 20 }
+      badge_2:  { max_chars: 20 }
+      badge_3:  { max_chars: 20 }
+      cta:      { max_chars: 22, optional: true }

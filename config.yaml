@@ -1,0 +1,57 @@
+# Creative Studio configuration
+
+models:
+  # Judgment layer — do not economize here
+  teardown:      claude-opus-5
+  product_brief: claude-opus-5
+  concepts:      claude-opus-5
+  briefs:        claude-opus-5
+  ad_copy:       claude-opus-5
+  # Volume layer
+  score:         claude-sonnet-5
+  image_prompts: claude-sonnet-5
+  dossier:       claude-sonnet-5
+  # Plumbing
+  reshape:       claude-haiku-4-5-20251001
+
+max_tokens: 16000
+
+# How many past creatives feed the teardown on round 2+. Pulled from log.csv
+# by ROAS, images resolved from previous runs.
+teardown:
+  top_winners: 5
+  top_losers: 3
+
+# Concept generation
+concepts:
+  overgenerate: 25        # generate this many, keep N
+  default_n: 15           # N — how many briefs to produce
+  mix:                    # proportions, normalised to N
+    iteration:   0.33     # winning angle, new execution
+    new_angle:   0.47     # untested desire / belief / buyer
+    format_swap: 0.20     # winning angle, untested archetype
+  spread:                 # minimum distinct values across the batch
+    awareness_stage: 3
+    life_force: 4
+    archetype: 5
+    emotional_driver: 4
+
+images:
+  provider: manual         # manual | higgsfield  — switch after probing the CLI
+  cli: higgsfield          # on Windows try "higgsfield.cmd" if PATH misbehaves
+  # Run `higgsfield model list --image` to see what your plan exposes.
+  # nano_banana_2 is reference-conditioned, which is what keeps packaging intact.
+  model: nano_banana_2
+  # Extra flags passed straight through to `generate create`, e.g. ["--seed","7"]
+  extra_args: []
+  # Archetypes are full_generate by default: the model renders the finished ad,
+  # text included, and the editor fixes what comes out broken.
+  variants_per_brief: 3
+  # 1:1 survives every placement without cropping. 4:5 (1080x1350) takes ~25%
+  # more vertical feed space for the same impression and usually beats 1:1 on
+  # CTR in feed — worth testing against your 1:1 control at some point.
+  aspect_ratio: "1:1"
+  size: "1080x1080"
+
+paths:
+  products: 'G:\My Drive\Creative Studio\products'
