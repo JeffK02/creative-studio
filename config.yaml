@@ -54,4 +54,7 @@ images:
   size: "1080x1080"
 
 paths:
+  knowledge: knowledge
+  problems: problems
   products: 'G:\My Drive\Creative Studio\products'
+  archetypes: templates/archetypes.yaml

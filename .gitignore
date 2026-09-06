@@ -1,0 +1,6 @@
+
+products/
+.venv/
+__pycache__/
+*.pyc
+probe-output.png
