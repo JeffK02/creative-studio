@@ -4,3 +4,9 @@ products/
 __pycache__/
 *.pyc
 probe-output.png
+
+products/
+.venv/
+__pycache__/
+*.pyc
+probe-output.png
