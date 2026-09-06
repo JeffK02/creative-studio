@@ -13,11 +13,11 @@ Nothing below requires a terminal. Do these before the first run.
 Copy `products/_template/` and rename it after the product. Four things to fill:
 
 | What | Effort | Description |
-|---|---|---|
-| `links.txt` | paste the landing page, advertorial and **checkout page** URLs | Core links |
-| `reference/` | drop in 3–5 clean product photos | Assets |
-| `winners/` + `losers/` | drop in the creatives, named after their Ad name | Creative logs |
-| `metrics.csv` | Ads Manager → Reports → Export CSV, dropped in as-is | Performance data |
+| :--- | :--- | :--- |
+| `links.txt` | paste the landing page, advertorial and **checkout page** URLs | Target web links |
+| `reference/` | drop in 3–5 clean product photos | Media assets |
+| `winners/` + `losers/` | drop in the creatives, named after their Ad name | Performance logs |
+| `metrics.csv` | Ads Manager → Reports → Export CSV, dropped in as-is | Meta data sheets |
 
 Optional: `copy.md` (the ad copy that ran) and `notes.md` (free text). Everything else — product name, price of each variant, offer, what problem it solves — is read off the pages by the `identify` stage and cached in `_derived/`. Nothing is typed twice, and nothing depends on someone summarising a page correctly.
 
@@ -28,16 +28,17 @@ Optional: `copy.md` (the ad copy that ran) and `notes.md` (free text). Everythin
 **On losers.** The field most likely to get skipped and the one that pays best. A system that only sees winners cannot recognise a bad idea, and will confidently propose angles that already failed.
 
 **Why the metrics matter.** They drive the diagnosis that decides what the next batch varies:
-- **CPM against CTR** — high CPM with low CTR means Meta is reading the creative as low-quality or too ad-like. A different failure from "boring image", and a different fix.
-- **CVR against CTR** — high CTR with low CVR means the ad is working and the claim underneath it is wrong. Instinct says make a prettier ad; the numbers say change what it promises.
+
+* **CPM against CTR** — high CPM with low CTR means Meta is reading the creative as low-quality or too ad-like. A different failure from "boring image", and a different fix.
+* **CVR against CTR** — high CTR with low CVR means the ad is working and the claim underneath it is wrong. Instinct says make a prettier ad; the numbers say change what it promises.
 
 ### 1.4 Where things live
 
 | What | Where | Who touches it |
-|---|---|---|
-| Code, prompts, knowledge, templates | private GitHub repo | you |
-| `products/{slug}/` assets and metrics | Google Drive (synced folder) | media buyer, editor |
-| Results log | Google Sheet, exported as CSV | media buyer |
+| :--- | :--- | :--- |
+| Code, prompts, knowledge, templates | private GitHub repo | Developer / Administrator |
+| `products/{slug}/` assets and metrics | Google Drive (synced folder) | Media buyer, Editor |
+| Results log | Google Sheet, exported as CSV | Media buyer |
 
 Point `paths.products` in `config.yaml` at your Drive-synced folder. Nobody on the team needs git — they see a Drive folder and a sheet.
 
@@ -48,7 +49,8 @@ Point `paths.products` in `config.yaml` at your Drive-synced folder. Nobody on t
 From round 2 onward the teardown pulls the top 5 and bottom 3 creatives **straight from `log.csv`**, resolving images from previous runs. Nobody updates `winners/` again.
 
 The cycle:
-```bash
+
+```text
 run.py → 15 creatives → test them → log.py --results → run.py
 ```
 
@@ -68,6 +70,7 @@ export ANTHROPIC_API_KEY=sk-ant-… # put this in your shell rc
 ```
 
 Then, in order:
+
 1. **Write the knowledge docs.** Nothing works well without them. The concepts stage reads both.
 2. **Set `images.provider: manual`** in `config.yaml`. Get the pipeline working end to end before automating image generation.
 3. **No templates needed.** Every archetype is `full_generate` — the image model renders the finished ad, text included, and your editor fixes what comes out broken.
@@ -89,7 +92,7 @@ python scripts/run.py acme-serum --stage concepts --run 2026-08-28
 ```
 
 | Stage | Output | Model |
-|---|---|---|
+| :--- | :--- | :--- |
 | teardown | `teardown.json` | Opus 5 |
 | brief | `product-brief.md` | Opus 5 |
 | concepts | `concepts.json` (25) | Opus 5 |
@@ -153,6 +156,8 @@ Never delete. The dossier, briefs, and results stay useful: if the skeptic angle
 ## Known gaps
 
 - **`fetch_lp.py` uses a dependency-free HTML stripper.** Fine for most landing pages; JavaScript-rendered pages return almost nothing and it will tell you so. Paste those in by hand.
-- **`scripts/images.py` `_higgsfield()` is a template, not working code.** The CLI argument names are guesses. Install the CLI locally (`npm i -g @higgsfield/cli`, `higgsfield auth login`).
-
- 
+- **`scripts/images.py` `_higgsfield()` is a template, not working code.** The CLI argument names are guesses. Install the CLI locally using the terminal commands:
+  ```bash
+  npm i -g @higgsfield/cli
+  higgsfield auth login
+  ```
